@@ -7,6 +7,7 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { ApplyLoanComponent } from './shared/components/apply-loan/apply-loan.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MaterialModule } from './material/material.module';
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

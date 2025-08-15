@@ -17,7 +17,7 @@
             </mat-error>
          </mat-form-field>
 
-         <mat-form-field appearance="fill" >
+         <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email">
 
@@ -51,13 +51,14 @@
             <input matInput formControlName="dob" [matDatepicker]="picker">
 
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-<mat-datepicker #picker></mat-datepicker>
+            <mat-datepicker #picker></mat-datepicker>
 
             <mat-error *ngIf="personalDetailsForm.get('dob')?.hasError('required')">
                Date Of Birth is required field!!
             </mat-error>
 
-            <mat-error *ngIf="personalDetailsForm.get('dob')?.invalid && personalDetailsForm.get('dob')?.dirty && personalDetailsForm.get('dob')?.hasError('InvalidDOB')">
+            <mat-error
+               *ngIf="personalDetailsForm.get('dob')?.invalid && personalDetailsForm.get('dob')?.dirty && personalDetailsForm.get('dob')?.hasError('InvalidDOB')">
                {{personalDetailsForm.get('dob')?.errors?.['InvalidDOB']}}
             </mat-error>
          </mat-form-field>
@@ -92,7 +93,7 @@
       </form>
    </mat-step>
 
-   <mat-step [stepControl]="documentUploadForm">
+    <mat-step [stepControl]="documentUploadForm">
       <ng-template matStepLabel>Document Upload Form</ng-template>
       <form [formGroup]="documentUploadForm">
          <mat-form-field appearance="fill">
@@ -103,16 +104,24 @@
                Adhar Number is required field!!
             </mat-error>
 
-            <mat-error *ngIf="documentUploadForm.get('adhar')?.dirty && documentUploadForm.get('adhar')?.invalid && documentUploadForm.get('adhar')?.hasError('InvalidAdharNum')">
+            <mat-error
+               *ngIf="documentUploadForm.get('adhar')?.dirty && documentUploadForm.get('adhar')?.invalid && documentUploadForm.get('adhar')?.hasError('InvalidAdharNum')">
                {{documentUploadForm.get('adhar')?.errors?.['InvalidAdharNum']}}
             </mat-error>
 
             <!-- <mat-error *ngIf="documentUploadForm.get('adhar')?.dirty && documentUploadForm.get('adhar')?.hasError('pattern')">
                Invalid paattern for Adhar number
-            </mat-error> -->
+            </mat-error>  -->
          </mat-form-field>
 
-         <mat-form-field  appearance="fill">
+         <div>
+            <input type="file" #panFileInput hidden (change)="onPanUpload($event, 'panFile')">
+            <button class="btn btn-sm btn-primary mb-2" (click)="panFileInput.click()" type="bu'">Upload Pan</button>
+        
+            <img [src]="selectedFile['panFile'].base64" *ngIf="base63File" width="300px">
+         </div>
+
+         <mat-form-field appearance="fill">
             <mat-label>Pan Card Number</mat-label>
             <input matInput formControlName="pan">
 
@@ -120,7 +129,8 @@
                Pan Card Number is required field.
             </mat-error>
 
-            <mat-error *ngIf="documentUploadForm.get('pan')?.dirty && documentUploadForm.get('pan')?.invalid && documentUploadForm.get('pan')?.hasError('InvalidPanNum')">
+            <mat-error
+               *ngIf="documentUploadForm.get('pan')?.dirty && documentUploadForm.get('pan')?.invalid && documentUploadForm.get('pan')?.hasError('InvalidPanNum')">
                {{documentUploadForm.get('pan')?.errors?.['InvalidPanNum']}}
             </mat-error>
 
@@ -129,10 +139,17 @@
             </mat-error> -->
          </mat-form-field>
 
+           <div>
+            <input type="file" #adharFileInput hidden (change)="onPanUpload($event, 'adharFile')">
+            <button class="btn btn-sm btn-primary mb-2" (click)="adharFileInput.click()" type="button">Upload Adhar</button>
+        
+            <img [src]="selectedFile['adharFile'].base64" *ngIf="base63File" width="300px">
+         </div>
+
          <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+         </div>
       </form>
    </mat-step>
 
@@ -142,6 +159,7 @@
          <div class="row">
             <div class="col-6">
                <ng-container formGroupName="currentAddress">
+                  <ng-template>Current Address</ng-template>
                   <mat-form-field appearance="fill">
                      <mat-label>Address Line 1</mat-label>
                      <input matInput formControlName="addressLine1">
@@ -170,15 +188,6 @@
                   </mat-form-field>
 
                   <mat-form-field appearance="fill">
-                     <mat-label>State</mat-label>
-                     <input matInput formControlName="state">
-
-                     <mat-error>
-                        State is required field.
-                     </mat-error>
-                  </mat-form-field>
-
-                  <mat-form-field appearance="fill">
                      <mat-label>Country</mat-label>
                      <mat-select matInput formControlName="country">
                         <mat-option *ngFor="let country of countriesData" [value]="country.name">
@@ -188,6 +197,19 @@
 
                      <mat-error>
                         Country is required field.
+                     </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="fill">
+                     <mat-label>State</mat-label>
+                     <mat-select matInput formControlName="state">
+                        <mat-option *ngFor="let state of currentStateArr" [value]="state.name">
+                           {{state.name}}
+                        </mat-option>
+                     </mat-select>
+
+                     <mat-error>
+                        State is required field.
                      </mat-error>
                   </mat-form-field>
 
@@ -202,8 +224,9 @@
                </ng-container>
             </div>
             <div class="col-6">
-               <ng-container formGroupName=" permanentAddress">
-                   <mat-form-field appearance="fill">
+               <ng-container formGroupName="permanentAddress">
+                  <ng-template matStepLabel>Permanent Address</ng-template>
+                  <mat-form-field appearance="fill">
                      <mat-label>Address Line 1</mat-label>
                      <input matInput formControlName="addressLine1">
 
@@ -231,15 +254,6 @@
                   </mat-form-field>
 
                   <mat-form-field appearance="fill">
-                     <mat-label>State</mat-label>
-                     <input matInput formControlName="state">
-
-                     <mat-error>
-                        State is required field.
-                     </mat-error>
-                  </mat-form-field>
-
-                  <mat-form-field appearance="fill">
                      <mat-label>Country</mat-label>
                      <mat-select matInput formControlName="country">
                         <mat-option *ngFor="let country of countriesData" [value]="country.name">
@@ -249,6 +263,20 @@
 
                      <mat-error>
                         Country is required field.
+                     </mat-error>
+                  </mat-form-field>
+
+
+                  <mat-form-field appearance="fill">
+                     <mat-label>State</mat-label>
+                     <mat-select formControlName="state">
+                        <mat-option *ngFor="let state of permanentStateArr" [value]="state.name">
+                           {{state.name}}
+                        </mat-option>
+                     </mat-select>
+
+                     <mat-error>
+                        State is required field.
                      </mat-error>
                   </mat-form-field>
 
@@ -262,12 +290,150 @@
                   </mat-form-field>
                </ng-container>
             </div>
+
+            <div class="col-12">
+               <section class="example-section">
+                  <mat-checkbox  formControlName="isAddsame">
+                     Current address and permanent address both are same.
+                  </mat-checkbox>
+               </section>
+            </div>
          </div>
 
          <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+         </div>
       </form>
    </mat-step>
+
+    <mat-step [stepControl]="employmentDetailForm">
+      <ng-template matStepLabel>Employment Detail Form</ng-template>
+      <form [formGroup]="employmentDetailForm">
+         <mat-form-field>
+            <mat-label>
+               Employment Type
+            </mat-label>
+            <mat-select matInput formControlName="employmentType">
+               <mat-option *ngFor="let empType of employmentType" [value]="empType">
+                  {{empType}}
+               </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="employmentDetailForm.get('employmentType')?.touched && employmentDetailForm.get('employmentType')?.hasError('required')">
+               Employment type is required field
+            </mat-error>
+         </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>
+              Current Amount
+            </mat-label>
+            <input matInput formControlName="currentAmount">
+         
+             <mat-error *ngIf="employmentDetailForm.get('currentAmount')?.touched && employmentDetailForm.get('currentAmount')?.hasError('required')">
+               Current Amount is required field
+            </mat-error>
+
+            <mat-error *ngIf="employmentDetailForm.get('currentAmount')?.dirty && employmentDetailForm.get('currentAmount')?.hasError('min')">
+               Current Amount should be positive
+            </mat-error>
+         </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>
+            Company Name
+            </mat-label>
+            <input matInput formControlName="companyName">
+         
+          <mat-error *ngIf="employmentDetailForm.get('companyName')?.touched && employmentDetailForm.get('companyName')?.hasError('required')">
+               Company Name is required field
+            </mat-error>
+         </mat-form-field>
+
+         <mat-form-field>
+            <mat-label>
+             Designation
+            </mat-label>
+            <input matInput formControlName="designation">
+         
+          <mat-error *ngIf="employmentDetailForm.get('designation')?.touched && employmentDetailForm.get('designation')?.hasError('required')">
+               Designation is required field
+            </mat-error>
+         </mat-form-field>
+
+
+         <div>
+               <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+         </div>
+      </form>
+   </mat-step>
+
+   <mat-step [stepControl]="loanDetailsForm">
+   <ng-template matStepLabel>Loan Details Form</ng-template>
+   <form [formGroup]="loanDetailsForm">
+       <mat-form-field>
+         <mat-label>Loan Amount</mat-label>
+         <input type="number" matInput formControlName="loanAmount">
+
+         <mat-error *ngIf="loanDetailsForm.get('loanAmount')?.touched && loanDetailsForm.get('loanAmount')?.hasError('required')">
+            Loan Amount is required field 
+         </mat-error>
+
+         <mat-error *ngIf="loanDetailsForm.get('loanAmount')?.dirty && loanDetailsForm.get('loanAmount')?.hasError('InvalidLoanAmount')">
+            {{loanDetailsForm.get('loanAmount')?.errors?.['InvalidLoanAmount']}}
+         </mat-error>
+       </mat-form-field>
+
+        <mat-form-field>
+         <mat-label>Loan Tenure</mat-label>
+         <input matInput formControlName="loanTenure">
+
+         <mat-error *ngIf="loanDetailsForm.get('loanTenure')?.touched && loanDetailsForm.get('loanTenure')?.hasError('required')">
+            Loan Tenure is required field 
+         </mat-error>
+
+          <mat-error *ngIf="loanDetailsForm.get('loanTenure')?.dirty && loanDetailsForm.get('loanTenure')?.hasError('InvalidLoanTenure')">
+            {{loanDetailsForm.get('loanTenure')?.errors?.['InvalidLoanTenure']}}
+         </mat-error>
+       </mat-form-field>
+
+        <mat-form-field>
+         <mat-label>Loan Purpose</mat-label>
+         <mat-select matInput formControlName="loanPurpose">
+            <mat-option *ngForm="let purpose of loanpurpose" [value]="purpose">
+               {{purpose}}
+            </mat-option>
+         </mat-select>
+
+         <mat-error *ngIf="loanDetailsForm.get('loanPurpose')?.touched && loanDetailsForm.get('loanPurpose')?.hasError('required')">
+            Loan Purpose is required field 
+         </mat-error>
+       </mat-form-field>
+
+       
+        <mat-form-field>
+         <mat-label>Nominee Name</mat-label>
+         <input matInput formControlName="nomineeName">
+
+         <mat-error *ngIf="loanDetailsForm.get('nomineeName')?.touched && loanDetailsForm.get('nomineeName')?.hasError('required')">
+            Nominee Name is required field 
+         </mat-error>
+       </mat-form-field>
+
+       <mat-form-field>
+         <mat-label>Nominee Relationship</mat-label>
+         <mat-select matInput formControlName="nomineeRelationship">
+            <mat-option *ngFor="let relationship of relationship" [value]="relationship">
+               {{relationship}}
+            </mat-option>
+         </mat-select>
+
+         <mat-error *ngIf="loanDetailsForm.get('nomineeRelationship')?.touched && loanDetailsForm.get('nomineeRelationship')?.hasError('required')">
+            Nominee Relationship is required field 
+         </mat-error>
+       </mat-form-field>
+   </form>
+</mat-step>
 </mat-stepper>

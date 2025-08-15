@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 import * as moment from "moment";
 
 
@@ -93,6 +93,65 @@ export class CustomValidators{
             }
         }
     }
+
+    static pincodeValidator() : ValidatorFn{
+        return (control : AbstractControl) : ValidationErrors | null => {
+            let val = control.value;
+
+            if(!val){
+                return null
+            }
+
+            let regex = /^[0-9]{6}$/;
+
+            let isInvalid = regex.test(val);
+
+            if(isInvalid){
+                return null
+            }else{
+                return {
+                    InvalidPincode : `Pincode should includes only 6 digit`
+                }
+            }
+        }
+    }
+
+    static loanAmountValidators(min : number, max : number) : ValidatorFn{
+        return (control : AbstractControl) : ValidationErrors | null => {
+            let val = control.value;
+
+            if(!val){
+                return null
+            }
+
+            if(val >= min && val <= max){
+                return null
+            }else{
+                return {
+                    InvalidLoanAmount : `Loan Amount should be in range ${min} - ${max}`
+                }
+            }
+        }
+    }
+
+    static loanTenureValidator(min : number, max : number) : ValidatorFn {
+        return (control : AbstractControl) : ValidationErrors | null => {
+            let val = control.value;
+
+            if(!val){
+                return null
+            }
+
+            if(val >= min && val <= max){
+                return null
+            }else{
+                return {
+                    InvalidLoanTenure : `Loan Tenure should be in range ${min} - ${max} months`
+                }
+            }
+        }
+    }
+
 }
 
 

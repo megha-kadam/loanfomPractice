@@ -5,7 +5,8 @@ export class CustomRegex {
     static username = '^[a-zA-Z ]*$';
     static email = '^[a-zA-Z0-9._-]+@[a-zA-Z0-9-_.]+\\.[a-zA-Z]{2,100}$';
     static panNum = '/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/';
-    static adharNum = '/^[2-9]{1}[0-9]{11}$/'
+    static adharNum = '/^[2-9]{1}[0-9]{11}$/';
+    static pincode = /^[0-9]{6}$/;
     static updateEmail =
      '/^(([^<>()[]\\.,;:s@"]+(.[^<>()[]\\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,9}))$/';
  }

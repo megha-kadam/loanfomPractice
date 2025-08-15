@@ -15,10 +15,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
   imports: [
+    MatCheckboxModule,
     CommonModule,
     MatStepperModule,
     MatFormFieldModule,
@@ -37,6 +39,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatToolbarModule
   ],
   exports: [
+    MatCheckboxModule,
     MatStepperModule,
     MatFormFieldModule,
     MatInputModule,
